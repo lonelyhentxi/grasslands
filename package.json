@@ -1,7 +1,7 @@
 {
   "name": "grasslands",
   "version": "0.1.0",
-  "description": "An adapter between grass and sass-loader etc.",
+  "description": "A wrapper with nodejs import resolver and an adapter between grass and sass-loader etc",
   "main": "index.js",
   "repository": "git@github.com:lonelyhentxi/grasslands.git",
   "author": "lonelyhentxi <master@evernightfireworks.com>",
