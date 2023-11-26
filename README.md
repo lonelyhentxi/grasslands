@@ -1,6 +1,6 @@
 # `grasslands`
 
-![https://github.com/lonelyhentxi/grasslands/actions](https://github.com/lonelyhentxi/grasslands/workflows/CI/badge.svg)
+![https://github.com/lonelyhentxi/grasslands/actions](https://github.com/lonelyhentxi/grasslands/workflows/CI/badge.svg) ![Version](https://img.shields.io/npm/v/grasslands) ![GitHub License](https://img.shields.io/github/license/lonelyhentxi/grasslands)
 
 A wrapper with nodejs import resolver and an adapter between [grass](https://github.com/connorskees/grass) and sass-loader? etc.
 

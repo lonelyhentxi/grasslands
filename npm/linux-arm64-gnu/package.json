@@ -28,7 +28,7 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "repository": "git@github.com:napi-rs/package-template.git",
+  "repository": "git@github.com:lonelyhentxi/grasslands.git",
   "libc": [
     "glibc"
   ]

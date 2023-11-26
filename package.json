@@ -12,6 +12,7 @@
     "css",
     "sass-loader",
     "grass",
+    "grasslands",
     "napi-rs",
     "NAPI",
     "N-API",
