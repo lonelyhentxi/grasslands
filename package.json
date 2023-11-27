@@ -1,6 +1,6 @@
 {
   "name": "grasslands",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "keywords": [
     "sass",
     "scss",
@@ -49,9 +49,11 @@
   "scripts": {
     "artifacts": "napi artifacts",
     "bench": "node -r @swc-node/register benchmark/bench.ts",
-    "postbuild": "tsc --project ./tsconfig.build.json",
-    "build": "napi build --platform --release --pipe \"prettier -w\"",
-    "build:debug": "napi build --platform --pipe \"prettier -w\" && tsc --project ./tsconfig.build.json",
+    "build-ts": "tsc --project ./tsconfig.build.json",
+    "build-rs": "napi build --platform --release --pipe \"prettier -w\"",
+    "build-rs:debug": "napi build --platform --debug --pipe \"prettier -w\"",
+    "build": "npm run build-rs && npm run build-ts",
+    "build:debug": "npm run build-rs:debug && npm run build-ts",
     "format": "run-p format:prettier format:rs format:toml",
     "format:prettier": "prettier . -w",
     "format:toml": "taplo format",
