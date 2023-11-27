@@ -1,6 +1,21 @@
 {
   "name": "grasslands-freebsd-x64",
-  "version": "1.0.0",
+  "version": "0.1.1",
+  "keywords": [
+    "sass",
+    "scss",
+    "css",
+    "sass-loader",
+    "grass",
+    "grasslands",
+    "napi-rs",
+    "NAPI",
+    "N-API",
+    "Rust",
+    "node-addon",
+    "node-addon-api"
+  ],
+  "description": "A grass wrapper with nodejs importer and an adapter between grass and sass-loader etc",
   "os": [
     "freebsd"
   ],
@@ -10,15 +25,6 @@
   "main": "grasslands.freebsd-x64.node",
   "files": [
     "grasslands.freebsd-x64.node"
-  ],
-  "description": "An adapter between grass and sass-loader etc.",
-  "keywords": [
-    "napi-rs",
-    "NAPI",
-    "N-API",
-    "Rust",
-    "node-addon",
-    "node-addon-api"
   ],
   "license": "MIT",
   "engines": {

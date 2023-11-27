@@ -1,6 +1,21 @@
 {
   "name": "grasslands-darwin-arm64",
-  "version": "1.0.0",
+  "version": "0.1.1",
+  "keywords": [
+    "sass",
+    "scss",
+    "css",
+    "sass-loader",
+    "grass",
+    "grasslands",
+    "napi-rs",
+    "NAPI",
+    "N-API",
+    "Rust",
+    "node-addon",
+    "node-addon-api"
+  ],
+  "description": "A grass wrapper with nodejs importer and an adapter between grass and sass-loader etc",
   "os": [
     "darwin"
   ],
@@ -8,10 +23,6 @@
     "arm64"
   ],
   "main": "grasslands.darwin-arm64.node",
-  "files": [
-    "grasslands.darwin-arm64.node"
-  ],
-  "description": "An adapter between grass and sass-loader etc.",
   "keywords": [
     "napi-rs",
     "NAPI",
