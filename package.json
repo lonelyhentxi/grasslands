@@ -59,6 +59,7 @@
     "format:toml": "taplo format",
     "format:rs": "cargo fmt",
     "lint": "eslint . -c ./.eslintrc.yml",
+    "lint:fix": "eslint . -c ./.eslintrc.yml --fix",
     "test:ava": "ava",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "exit 0",

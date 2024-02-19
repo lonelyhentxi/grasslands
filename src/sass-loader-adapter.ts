@@ -50,10 +50,10 @@ export async function compileStringAsync(source: string, options?: Options): Pro
     source,
     options
       ? {
-        ...options,
-        file: (options.file ?? '').toString(),
-        resolveAlias: normalizeResolveAlias(options.resolveAlias),
-      }
+          ...options,
+          file: (options.file ?? '').toString(),
+          resolveAlias: normalizeResolveAlias(options.resolveAlias),
+        }
       : undefined,
   )
 
@@ -74,9 +74,9 @@ export function render(
     options.data ?? '',
     options
       ? {
-        ...options,
-        resolveAlias: normalizeResolveAlias(options.resolveAlias),
-      }
+          ...options,
+          resolveAlias: normalizeResolveAlias(options.resolveAlias),
+        }
       : undefined,
   )
 
