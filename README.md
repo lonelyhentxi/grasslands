@@ -4,7 +4,7 @@
 
 A wrapper with nodejs import resolver and an adapter between [grass](https://github.com/connorskees/grass) and sass-loader? etc.
 
->**Performance**
+> **Performance**
 > grass is benchmarked against dart-sass and sassc (libsass) here. In general, grass appears to be ~2x faster than dart-sass and ~1.7x faster than sassc.
 
 And In my tests, it is **5~10x** faster than `sass` package.
@@ -44,12 +44,17 @@ npm install -D grasslands
       includePaths: [
         path.resolve('your/include_paths1'),
         path.resolve('your/include_paths2')
-      ]
+      ],
+      resolveAlias: {
+        '@utils': ['src/utils']
+      }
     },
   }
 }
 // your other configs
 ```
+
+Currently not support sassOptions.importer/importers as it 2x ~ 4x slower.
 
 # Support
 

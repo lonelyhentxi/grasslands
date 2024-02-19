@@ -8,38 +8,54 @@ type LoggerOptions = {
   stack: string
 }
 
-type Options = SassOptions & {
+type ResolveAliasEntry = string | Array<string>
+type ResolveAliasOptions = Array<[string, ResolveAliasEntry]> | Record<string, ResolveAliasEntry>
+
+type Options = Omit<SassOptions, 'resolveAlias'> & {
   importers: { canonicalize: () => Promise<void>; load: () => void }[]
   logger: {
     debug: (message: string, options: LoggerOptions) => void
     warn: (message: string, options: LoggerOptions) => void
   }
   url: URL
+  resolveAlias: ResolveAliasOptions
 }
 
-type LegacyOptions = LegacySassOptions & {
+type LegacyOptions = Omit<LegacySassOptions, 'resolveAlias'> & {
   importer: ((originalUrl: string, prev: any, done: any) => void)[]
   logger: {
     debug: (message: string, options: LoggerOptions) => void
     warn: (message: string, options: LoggerOptions) => void
   }
+  resolveAlias: ResolveAliasOptions
 }
 
 export const info = `dart-sass\t1.69.5`
 
-export function compileStringSync(source: string, options?: Options): SassResult {
-  const ret = compile(source, options ? { ...options, file: (options.file ?? '').toString() } : undefined)
-
-  if (ret.success) {
-    return ret.success
+export function normalizeResolveAlias(options: ResolveAliasOptions | null): Record<string, Array<string>> | undefined {
+  let items: Array<[string, Array<string>]> = []
+  if (Array.isArray(options)) {
+    items = options.map(([k, v]) => [k, Array.isArray(v) ? v : [v]])
+  } else if (typeof options === 'object' && options) {
+    items = Object.entries(options).map(([k, v]) => [k, Array.isArray(v) ? v : [v]])
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-throw-literal
-  throw ret.failure
+  if (!items.length) {
+    return undefined
+  }
+  return Object.fromEntries(items)
 }
 
 export async function compileStringAsync(source: string, options?: Options): Promise<SassResult> {
-  const ret = compile(source, options ? { ...options, file: (options.file ?? '').toString() } : undefined)
+  const ret = compile(
+    source,
+    options
+      ? {
+        ...options,
+        file: (options.file ?? '').toString(),
+        resolveAlias: normalizeResolveAlias(options.resolveAlias),
+      }
+      : undefined,
+  )
 
   if (ret.success) {
     // eslint-disable-next-line @typescript-eslint/return-await,@typescript-eslint/await-thenable
@@ -54,7 +70,15 @@ export function render(
   options: LegacyOptions,
   callback: (error?: LegacySassError, result?: LegacySassResult) => void,
 ): void {
-  const ret = compileLegacy(options.data ?? '', options)
+  const ret = compileLegacy(
+    options.data ?? '',
+    options
+      ? {
+        ...options,
+        resolveAlias: normalizeResolveAlias(options.resolveAlias),
+      }
+      : undefined,
+  )
 
   if (ret.success) {
     return callback(undefined, ret.success)

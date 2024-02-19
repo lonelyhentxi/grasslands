@@ -26,6 +26,7 @@ export interface SassOptions {
   alertColor?: boolean
   quietDeps?: boolean
   verbose?: boolean
+  resolveAlias?: Record<string, Array<string>>
 }
 export interface SassResult {
   css: string
@@ -81,6 +82,7 @@ export interface LegacySassOptions {
   data?: string
   file?: string
   indentedSyntax?: boolean
+  resolveAlias?: Record<string, Array<string>>
 }
 export interface LegacySassResult {
   css: string

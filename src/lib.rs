@@ -2,9 +2,10 @@
 
 use lazy_static::lazy_static;
 use napi_derive::napi;
-use nodejs_resolver::{Options as ResolverOptions, ResolveResult, Resolver};
+use nodejs_resolver::{AliasMap, Options as ResolverOptions, ResolveResult, Resolver};
 use path_slash::PathExt;
 use regex::Regex;
+use std::collections::HashMap;
 use std::fmt::Debug;
 use std::panic::{RefUnwindSafe, UnwindSafe};
 use std::path::{Path, PathBuf};
@@ -17,6 +18,8 @@ lazy_static! {
   pub static ref WEBPACK_TILDE_PATTERN_PREFIX: Regex = Regex::new(r"^~([^/]+)").unwrap();
 }
 
+pub type ResolveAlias = HashMap<String, Vec<String>>;
+
 #[derive(Debug)]
 pub struct GrasslandsImporter {
   pwd: PathBuf,
@@ -26,7 +29,14 @@ pub struct GrasslandsImporter {
 }
 
 impl GrasslandsImporter {
-  pub fn new(file: Option<String>) -> Self {
+  fn convert_resolve_alias(alias: ResolveAlias) -> Vec<(String, Vec<AliasMap>)> {
+    alias
+      .into_iter()
+      .map(|(k, vs)| (k, vs.into_iter().map(AliasMap::Target).collect()))
+      .collect()
+  }
+
+  pub fn new(file: Option<String>, alias: Option<ResolveAlias>) -> Self {
     let sass_file_resolver = Resolver::new(ResolverOptions {
       extensions: vec![
         ".sass".to_owned(),
@@ -41,6 +51,10 @@ impl GrasslandsImporter {
       symlinks: true,
       resolve_to_context: false,
       main_files: vec!["_index".to_owned(), "index".to_owned()],
+      alias: alias
+        .clone()
+        .map(Self::convert_resolve_alias)
+        .unwrap_or_default(),
       ..Default::default()
     });
     let sass_module_resolver = Resolver::new(ResolverOptions {
@@ -57,6 +71,7 @@ impl GrasslandsImporter {
       symlinks: true,
       resolve_to_context: true,
       main_files: vec!["_index".to_owned(), "index".to_owned()],
+      alias: alias.map(Self::convert_resolve_alias).unwrap_or_default(),
       ..Default::default()
     });
     Self {
@@ -244,6 +259,7 @@ pub struct SassOptions {
   // pub logger
   pub quiet_deps: Option<bool>,
   pub verbose: Option<bool>,
+  pub resolve_alias: Option<HashMap<String, Vec<String>>>,
 }
 
 #[napi(object)]
@@ -333,6 +349,7 @@ pub struct LegacySassOptions {
   pub data: Option<String>,
   pub file: Option<String>,
   pub indented_syntax: Option<bool>,
+  pub resolve_alias: Option<HashMap<String, Vec<String>>>,
 }
 
 #[napi(object)]
@@ -555,8 +572,11 @@ pub fn to_legacy_sass_error(options: &LegacySassOptions, err: grass::Error) -> L
 
 #[napi]
 pub fn compile(source: String, options: Option<SassOptions>) -> SassCompileResult {
-  let options = options.unwrap_or_default();
-  let grass_fs = Arc::new(GrasslandsImporter::new(options.file.clone()));
+  let mut options = options.unwrap_or_default();
+  let grass_fs = Arc::new(GrasslandsImporter::new(
+    options.file.clone(),
+    options.resolve_alias.take(),
+  ));
   let grass_opts = sass_to_grass_options(options.clone(), grass_fs.as_ref(), grass_fs.as_ref());
   let ret = grass::from_string(source, &grass_opts);
 
@@ -581,7 +601,7 @@ pub fn compile_legacy(
   source: String,
   options: Option<LegacySassOptions>,
 ) -> LegacySassCompileResult {
-  let options = options.unwrap_or_default();
+  let mut options = options.unwrap_or_default();
   let start_time = SystemTime::now();
   let entry = if let Some(file) = &options.file {
     PathBuf::from(file)
@@ -591,7 +611,10 @@ pub fn compile_legacy(
   } else {
     "data".to_string()
   };
-  let grass_fs = Arc::new(GrasslandsImporter::new(options.file.clone()));
+  let grass_fs = Arc::new(GrasslandsImporter::new(
+    options.file.clone(),
+    options.resolve_alias.take(),
+  ));
   let grass_opts =
     legacy_sass_to_grass_options(options.clone(), grass_fs.as_ref(), grass_fs.as_ref());
   let ret = grass::from_string(source, &grass_opts);
