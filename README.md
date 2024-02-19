@@ -60,14 +60,14 @@ Currently not support sassOptions.importer/importers as it 2x ~ 4x slower.
 
 ### Operating Systems
 
-|                  | node14 | node16 | node18 |
-| ---------------- | ------ | ------ | ------ |
-| Windows x64      | ✓      | ✓      | ✓      |
-| Windows arm64    | ✓      | ✓      | ✓      |
-| macOS x64        | ✓      | ✓      | ✓      |
-| macOS arm64      | ✓      | ✓      | ✓      |
-| Linux x64 gnu    | ✓      | ✓      | ✓      |
-| Linux x64 musl   | ✓      | ✓      | ✓      |
-| Linux arm64 gnu  | ✓      | ✓      | ✓      |
-| Linux arm64 musl | ✓      | ✓      | ✓      |
-| FreeBSD x64      | ✓      | ✓      | ✓      |
+|                  | node16 | node18 |
+| ---------------- | ------ | ------ |
+| Windows x64      | ✓      | ✓      |
+| Windows arm64    | ✓      | ✓      |
+| macOS x64        | ✓      | ✓      |
+| macOS arm64      | ✓      | ✓      |
+| Linux x64 gnu    | ✓      | ✓      |
+| Linux x64 musl   | ✓      | ✓      |
+| Linux arm64 gnu  | ✓      | ✓      |
+| Linux arm64 musl | ✓      | ✓      |
+| FreeBSD x64      | ✓      | ✓      |
