@@ -2,7 +2,7 @@
 authors = ["lonelyhentxi <master@evernightfireworks.com>"]
 edition = "2021"
 name    = "grasslands"
-version = "0.1.0"
+version = "0.1.3"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -10,24 +10,25 @@ version = "0.1.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-anyhow = { version = "1.0.75", features = [] }
-codemap = "0.1.3"
-dunce = "1.0.4"
-lazy_static = { version = "1.4.0", features = [] }
-napi        = "2"
-napi-derive = "2"
-nodejs-resolver = "0.1.0"
-path-slash = "0.2.1"
-regex = "1.10.2"
-serde_json = "1.0.108"
-sugar_path = "0.0.12"
-swc_common = "0.33.9"
-tracing = "0.1.40"
+anyhow             = { version = "1.0.75", features = [] }
+codemap            = "0.1.3"
+dunce              = "1.0.4"
+lazy_static        = { version = "1.4.0", features = [] }
+napi               = { version = "2", features = ["async", "napi8"] }
+napi-derive        = "2"
+nodejs-resolver    = "0.1.0"
+path-slash         = "0.2.1"
+regex              = "1.10.2"
+serde_json         = "1.0.108"
+sugar_path         = "0.0.12"
+swc_common         = "0.33.9"
+tokio              = "1.36.0"
+tracing            = "0.1.40"
 tracing-subscriber = "0.3.18"
 
-[dependencies.grass]
-git = "https://github.com/lonelyhentxi/grass.git"
-rev = "0d53312"
+  [dependencies.grass]
+  git = "https://github.com/lonelyhentxi/grass.git"
+  rev = "0d53312"
 
 [build-dependencies]
 napi-build = "2"

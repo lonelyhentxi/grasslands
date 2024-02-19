@@ -12,12 +12,27 @@ export const enum SassSyntax {
   css = 'css',
   scss = 'scss',
 }
+export interface SassImporterResult {
+  contents: string
+  sourceMapUrl?: string
+  syntax: SassSyntax
+}
+export interface SassCanonicalizeContext {
+  containingUrl?: string
+  fromImport: boolean
+}
+export interface SassImporter {
+  canonicalize?: (arg0: string, arg1?: SassCanonicalizeContext | undefined | null) => any
+  load?: (arg: string) => any
+  findFileUrl?: (arg0: string, arg1?: SassCanonicalizeContext | undefined | null) => any
+}
 export interface SassOptions {
   file?: string
   data?: string
   loadPaths?: Array<string>
   syntax?: SassSyntax
   url?: string
+  importer?: Array<SassImporter>
   charset?: boolean
   sourceMap?: boolean
   sourceMapIncludeSources?: boolean
@@ -64,6 +79,13 @@ export interface LegacySassStats {
   entry: string
   includedFiles: Array<string>
 }
+export interface LegacySassImportResult {
+  file?: string
+  contents?: string
+}
+export interface LegacyImporterThis {
+  fromImport: boolean
+}
 export interface LegacySassOptions {
   includePaths?: Array<string>
   identType?: string
@@ -75,6 +97,7 @@ export interface LegacySassOptions {
   sourceMap?: boolean
   sourceMapContents?: boolean
   sourceMapEmbed?: boolean
+  importer?: Array<(arg0: LegacyImporterThis, arg1: string, arg2?: string | undefined | null) => any>
   charset?: boolean
   quietDeps?: boolean
   verbose?: boolean
@@ -101,5 +124,8 @@ export interface LegacySassCompileResult {
   success?: LegacySassResult
   failure?: LegacySassError
 }
-export function compile(source: string, options?: SassOptions | undefined | null): SassCompileResult
-export function compileLegacy(source: string, options?: LegacySassOptions | undefined | null): LegacySassCompileResult
+export function compile(source: string, options?: SassOptions | undefined | null): Promise<SassCompileResult>
+export function compileLegacy(
+  source: string,
+  options?: LegacySassOptions | undefined | null,
+): Promise<LegacySassCompileResult>
